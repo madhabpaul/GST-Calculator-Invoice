@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import { v4 as uuidv4 } from 'uuid';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -109,6 +101,12 @@ function Form() {
         setInputFields(values);
     }
     console.log(taxSlab);
+    // function printCon(param) {
+    //     var divContent = document.getElementById(param).innerHTML;
+    //     console.log(divContent);
+    //     document.body.innerHTML = divContent;
+    //     window.print();
+    //     };
   return (
     <>
 
@@ -146,7 +144,7 @@ function Form() {
                 </div>
             </form>
             </div>
-            <div className="tableDesign">
+        <div className="tableDesign">
             <h3>BUYER DETAILS</h3>
             <form>
                 <div class="form-row">
@@ -205,7 +203,7 @@ function Form() {
         </div>
         </form>
         <div className="table-responsive"> 
-            <table className="table">
+            <table className="table table-bordered">
                 <thead>
                     <tr>
                         <th>Sl. No.</th>
@@ -252,76 +250,158 @@ function Form() {
             </table>
         </div>
         </div>
-        
-        <div className={classes.root}>
-            <Grid container spacing={1}>
-                <Grid item xs={12} md={12} lg={12}>
-                    <Paper className={classes.paper}>
-                        <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="spanning table">
-                                <TableHead>
-                                    <TableRow className={classes.tableRow}>
-                                        <TableCell>Sl. No.</TableCell>
-                                        <TableCell>Description</TableCell>
-                                        <TableCell>HSN Code</TableCell>
-                                        <TableCell>Quantity</TableCell>
-                                        <TableCell>Unit</TableCell>
-                                        <TableCell>Rate</TableCell>
-                                        <TableCell>Taxable Amt.</TableCell>
-                                        <TableCell>Tax %</TableCell>
-                                        <TableCell>CGST</TableCell>
-                                        <TableCell>Tax %</TableCell>
-                                        <TableCell>SGST</TableCell>
-                                        <TableCell>Total</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {inputFields.map(data => {
-                                        let taxValue = data.qty*data.rate;
-                                        let gstTax = (taxValue/100)*data.taxRate;
-                                        let total = taxValue+ gstTax ;
-                                        let taxPercentage = data.taxRate/2;
-                                        let gst = gstTax/2;
-                                        return (
-                                        <TableRow>
-                                        <TableCell>{data.slno}</TableCell>                                    
-                                        <TableCell>{data.desc}</TableCell>
-                                        <TableCell>{data.hsn}</TableCell>
-                                        <TableCell>{data.qty}</TableCell>
-                                        <TableCell>{data.unit}</TableCell>
-                                        <TableCell>{data.rate}</TableCell>
-                                        <TableCell>{taxValue}</TableCell>
-                                        <TableCell>{taxPercentage}</TableCell>
-                                        <TableCell>{gst}</TableCell>
-                                        <TableCell>{taxPercentage}</TableCell>
-                                        <TableCell>{gst}</TableCell>
-                                        <TableCell>{total}</TableCell>
-                                    </TableRow>)
-                                     })}
-                                    
-                                    
-                                    
-                                    <TableRow>
-                                        <TableCell rowSpan={5} />
-                                        <TableCell colSpan={6}>Subtotal</TableCell>
-                                        <TableCell align="right">Total</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell colSpan={4}>Tax</TableCell>
-                                        <TableCell align="right">7%</TableCell>
-                                        <TableCell align="right">50 Tax</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell colSpan={6}>Total</TableCell>
-                                        <TableCell align="right">Rs. 20000</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Paper>
-                </Grid>
-            </Grid>
+        <div className="invoiceDesign">
+        <h3>INVOICE DETAILS</h3>
+        <div className="table-responsive"> 
+            <table className="table table-bordered table-hover">
+                <thead className="thead-dark">
+                    <tr>
+                        <th>Sl. No.</th>
+                        <th>Item Description</th>
+                        <th>HSN Code</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Taxable Amt.</th>
+                        <th>CGST %</th>
+                        <th>CGST Rate</th>
+                        <th>SGST %</th>
+                        <th>SGST Rate</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {inputFields.map(data => {
+                    let taxValue = data.qty*data.rate;
+                    let gstTax = (taxValue/100)*data.taxRate;
+                    let total = taxValue+ gstTax ;
+                    let taxPercentage = data.taxRate/2;
+                    let gst = gstTax/2;
+                    return (
+                        <tr>
+                            <td>{data.slno}</td>                                    
+                            <td>{data.desc}</td>
+                            <td>{data.hsn}</td>
+                            <td>{data.qty} {data.unit}</td>
+                            <td>{data.rate}</td>
+                            <td>{taxValue}</td>
+                            <td>{taxPercentage}</td>
+                            <td>{gst}</td>
+                            <td>{taxPercentage}</td>
+                            <td>{gst}</td>
+                            <td>{total}</td>
+                        </tr>
+                        )})}
+                </tbody>
+            </table>
         </div>
+        </div>        
+        
+        {/* <button onClick={printCon('print')}>Print</button> */}
+        
+        <div className="preview" id="print">
+            <div className="insideDiv">
+            {Details.map(detail => {
+            return(
+                <>       
+                <div><b>GSTIN: {detail.firmGst}</b>Original copy</div>
+                <div className="headSection">
+                    <h5><b><u>TAX INVOICE</u></b></h5>
+                    <h2><b>{detail.firmName}</b></h2>
+                    {detail.firmAddress}<br />
+                    <b>PAN:</b> {detail.pan}<br />
+                    <b>Phone:</b> {detail.phone}    <b>Email:</b> {detail.email}
+                </div>
+                <div className="row">
+                    <div className="column">
+                        <b><i>Party Details:</i></b><br />
+                        {detail.buyerName}<br />
+                        {detail.buyerAddress}<br />
+                        <b>Party PAN :</b> {detail.buyerPan}<br />
+                        <b>Party Email :</b> {detail.buyerEmail}<br />
+                        <b>Party Mobile No :</b> {detail.buyerPhone}<br />
+                        <b>GSTIN / UIN :</b> {detail.buyerGst}<br />
+                    </div>
+                    <div className="column">
+                        <b>Invoice No. :</b> {detail.billNo}<br />
+                        <b>Date :</b> {detail.date}<br />
+                        <b>Place of Supply :</b> {detail.buyerPlace}<br />
+                        <b>Transport :</b> {detail.buyerTransport}<br />
+                    </div>
+                </div>
+                </>
+                )})}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SL. No.</th>
+                            <th>Item Description</th>
+                            <th>HSN</th>
+                            <th>Qty.</th>
+                            <th>Unit</th>
+                            <th>Price</th>
+                            <th>CGST<br />Rate</th>
+                            <th>CGST<br />Amount</th>
+                            <th>SGST<br />Rate</th>
+                            <th>SGST<br />Amount</th>
+                            <th>Amount (&#8377;)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                        </tr>
+                        <tr>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div className="headSection">
+                    <h6><b><u>Bank Details:</u></b></h6>
+                    <b>Bank: </b> <b>Branch Name : </b><br />
+                    <b>Bank A/C Number :</b><br />
+                    <b>Bank Branch IFSC :</b>
+                </div>
+                <div className="row">
+                    <div className="column">
+                        <b><u>Terms and Conditions :</u></b><br />
+                        <ul>
+                            <li>Goods once sold cannot be taken back.</li>
+                            <li>Interest @24% p.a. will be charged if bills is not paid within 30 days. <br />
+                            All disputes subject to Jurisdiction.</li>
+                        </ul>
+                    </div>
+                    <div className="column">
+                        <b>E.& O.E. </b> For, 
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <p className="textRight"><b>Authorised Signatory</b></p> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <footer className={classes.footer}>
             <Container maxWidth="sm">
                 <Typography variant="body1">Made with ❤️ | Developer 👉 <Link href="https://github.com/madhabpaul" >Madhab Paul </Link></Typography>
